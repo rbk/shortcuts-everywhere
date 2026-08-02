@@ -19,6 +19,7 @@
   let dot = null;       // bottom-right status dot
   let observer = null;  // MutationObserver for dynamic DOM
   let rescanTimer = null;
+  let sidebar = null;     // settings sidebar element
 
   // --- helpers ---------------------------------------------------------------
 
@@ -247,16 +248,186 @@
     }
   }
 
+  function setConfiguredPool(raw) {
+    const pool = normalizePool(raw);
+    try {
+      if (pool) localStorage.setItem(keysStorageKey(), pool);
+      else localStorage.removeItem(keysStorageKey());
+    } catch (_) {
+      // localStorage unavailable; config won't persist.
+    }
+    return pool;
+  }
+
+  function clearConfiguredPool() {
+    try {
+      localStorage.removeItem(keysStorageKey());
+    } catch (_) {
+      // localStorage unavailable.
+    }
+  }
+
   // Returns the effective pool for this origin: custom config if set, else default.
   function resolveKeyPool() {
     return getConfiguredPool() || DEFAULT_KEY_POOL;
   }
 
+  // --- settings sidebar -----------------------------------------------------
+
+  // Simple settings panel (fixed right). Open/close with Shift+/ ("?").
+  let sidebarRefs = null; // { toggleBtn, input, status }
+
+  function sidebarBtnStyle() {
+    return {
+      background: "#2a2a2a", color: "#e8e8e8", border: "1px solid #444",
+      borderRadius: "4px", padding: "6px 8px", cursor: "pointer",
+      fontFamily: "inherit", fontSize: "13px"
+    };
+  }
+
+  function buildSidebar() {
+    sidebar = document.createElement("div");
+    sidebar.id = "__ks_sidebar";
+    Object.assign(sidebar.style, {
+      position: "fixed", top: "0", right: "0", width: "320px", height: "100%",
+      boxSizing: "border-box", padding: "16px", overflowY: "auto",
+      background: "#1e1e1e", color: "#e8e8e8", fontFamily: "system-ui, sans-serif",
+      fontSize: "13px", lineHeight: "1.5", boxShadow: "-4px 0 24px rgba(0,0,0,0.4)",
+      zIndex: Z, pointerEvents: "auto"
+    });
+
+    // Header
+    const header = document.createElement("div");
+    Object.assign(header.style, {
+      display: "flex", justifyContent: "space-between", alignItems: "center",
+      marginBottom: "16px"
+    });
+    const title = document.createElement("b");
+    title.textContent = "Keyboard Shortcuts";
+    const close = document.createElement("button");
+    close.textContent = "×";
+    close.title = "Close (Shift+/ or Esc)";
+    Object.assign(close.style, sidebarBtnStyle());
+    close.onclick = closeSidebar;
+    header.appendChild(title);
+    header.appendChild(close);
+    sidebar.appendChild(header);
+
+    // Enabled toggle
+    const toggleBtn = document.createElement("button");
+    Object.assign(toggleBtn.style, {
+      ...sidebarBtnStyle(), display: "block", width: "100%", marginBottom: "16px"
+    });
+    toggleBtn.onclick = () => { toggle(); refreshSidebarState(); };
+    sidebar.appendChild(toggleBtn);
+
+    // Custom key order for this site
+    const label = document.createElement("div");
+    label.textContent = "Custom key order for this site";
+    Object.assign(label.style, { marginBottom: "6px" });
+    sidebar.appendChild(label);
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.spellcheck = false;
+    input.value = getConfiguredPool() || DEFAULT_KEY_POOL;
+    Object.assign(input.style, {
+      width: "100%", boxSizing: "border-box", background: "#2a2a2a", color: "#e8e8e8",
+      border: "1px solid #444", borderRadius: "4px", padding: "6px 8px",
+      fontFamily: "monospace", fontSize: "13px", marginBottom: "8px"
+    });
+    sidebar.appendChild(input);
+
+    const btnRow = document.createElement("div");
+    Object.assign(btnRow.style, { display: "flex", gap: "8px", marginBottom: "8px" });
+
+    const save = document.createElement("button");
+    save.textContent = "Save";
+    Object.assign(save.style, { ...sidebarBtnStyle(), flex: "1" });
+    save.onclick = () => {
+      const pool = setConfiguredPool(input.value);
+      input.value = pool || DEFAULT_KEY_POOL;
+      if (enabled) renderBadges();
+      flashStatus(pool ? "Saved key order" : "Invalid — reset to default");
+    };
+
+    const reset = document.createElement("button");
+    reset.textContent = "Reset";
+    Object.assign(reset.style, { ...sidebarBtnStyle(), flex: "1" });
+    reset.onclick = () => {
+      clearConfiguredPool();
+      input.value = DEFAULT_KEY_POOL;
+      if (enabled) renderBadges();
+      flashStatus("Reset to default");
+    };
+
+    btnRow.appendChild(save);
+    btnRow.appendChild(reset);
+    sidebar.appendChild(btnRow);
+
+    const status = document.createElement("div");
+    Object.assign(status.style, { minHeight: "18px", color: "#8a8", marginBottom: "16px" });
+    sidebar.appendChild(status);
+
+    // Footer hint
+    const hint = document.createElement("div");
+    hint.innerHTML =
+      "Toggle shortcuts: press <code>/</code> twice<br>" +
+      "Open/close settings: press <code>Shift + /</code>";
+    Object.assign(hint.style, { color: "#888", fontSize: "12px" });
+    hint.querySelectorAll("code").forEach((c) => {
+      Object.assign(c.style, { background: "#2a2a2a", padding: "0 3px", borderRadius: "3px" });
+    });
+    sidebar.appendChild(hint);
+
+    document.body.appendChild(sidebar);
+    sidebarRefs = { toggleBtn, input, status };
+    refreshSidebarState();
+  }
+
+  function flashStatus(msg) {
+    if (!sidebarRefs) return;
+    sidebarRefs.status.textContent = msg;
+    clearTimeout(flashStatus._t);
+    flashStatus._t = setTimeout(() => {
+      if (sidebarRefs) sidebarRefs.status.textContent = "";
+    }, 2000);
+  }
+
+  function refreshSidebarState() {
+    if (!sidebarRefs) return;
+    sidebarRefs.toggleBtn.textContent = enabled ? "Shortcuts: ON" : "Shortcuts: OFF";
+    sidebarRefs.toggleBtn.style.background = enabled ? "#1b4332" : "#3a1d1d";
+  }
+
+  function closeSidebar() {
+    if (sidebar) { sidebar.remove(); sidebar = null; sidebarRefs = null; }
+  }
+
+  function toggleSidebar() {
+    if (sidebar) closeSidebar();
+    else if (document.body) buildSidebar();
+  }
+
   // --- key handling ----------------------------------------------------------
 
   document.addEventListener("keydown", function (e) {
+    // Escape closes the settings sidebar (works even while focused in its input).
+    if (sidebar && e.key === "Escape") {
+      e.preventDefault();
+      closeSidebar();
+      return;
+    }
+
     // Never interfere while the user is typing in a text field.
     if (isTextField(document.activeElement)) return;
+
+    // Shift + / (produces "?") opens/closes the settings sidebar.
+    if (e.key === "?") {
+      e.preventDefault();
+      toggleSidebar();
+      return;
+    }
 
     if (e.key === "/") {
       const now = Date.now();

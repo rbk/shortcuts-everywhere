@@ -19,6 +19,9 @@ No build step, no dependencies, no icons. Load it as an unpacked extension in
 
 - `/` pressed twice within 400ms (the unshifted `?` key) toggles shortcuts ON/OFF (ignored while
   focused in a text field).
+- `Shift` + `/` (produces `?`) opens/closes a settings sidebar (Escape or the `×` button closes it).
+  The sidebar lets you toggle shortcuts on/off and set the per-site custom key order; it runs in the
+  isolated world (`content.js`) and reads/writes the shared `localStorage` directly.
 - The toggle state is persisted in `localStorage` (key `__ks_enabled`) and restored on load,
   so shortcuts remain on after a page refresh.
 - When ON: a red dot shows bottom-right; interactive elements
@@ -53,4 +56,5 @@ No build step, no dependencies, no icons. Load it as an unpacked extension in
   toggle off. Reload the page while enabled and confirm shortcuts reappear. Open
   the console and call `__keyboardShortcuts.setKeys("abc")` to confirm a custom
   order persists and is honored on reload; `__keyboardShortcuts.clearKeys()` to
-  restore the default.
+  restore the default. Press `Shift` + `/` to confirm the settings sidebar opens
+  and its Save/Reset controls update the badge keys live.
