@@ -1,0 +1,20 @@
+[
+  {
+    "name": "loop-key-pool-when-exhausted",
+    "description": "When there are more interactive elements than keys in the pool (36: 0-9 + a-z), remaining elements get no shortcut. Extend the assignment so it continues past 36 elements, e.g. by looping/repeating the pool (with a visual disambiguator like a multi-char label or a second-pass modifier) or by generating additional key combos. Decide on the UX (repeat keys with a count? add modifier-prefixed keys?) and implement so every visible interactive element gets an activatable shortcut. Affected file: content.js (renderBadges / KEY_POOL usage).",
+    "created_at": "2026-08-02T17:41:44Z",
+    "completed_at": null
+  },
+  {
+    "name": "skip-non-visible-interactive-elements",
+    "description": "Badges/shortcuts are being assigned to elements that are not actually visible to the user (e.g. off-screen, display:none ancestors, opacity:0, zero-size, or hidden behind overlays). The current visibility check only uses getBoundingClientRect width/height == 0, which misses hidden-via-CSS and off-screen elements. Add a robust visibility check (e.g. computed style visibility/display, offsetParent, and/or elementFromPoint/IntersectionObserver) so only genuinely visible interactive elements receive keys and badges. Affected file: content.js (getInteractiveElements / renderBadges).",
+    "created_at": "2026-08-02T17:41:44Z",
+    "completed_at": null
+  },
+  {
+    "name": "fix-badge-positioning-for-fixed-elements",
+    "description": "Badge positioning is wrong for position:fixed elements. Badges use getBoundingClientRect (viewport coords) with position:fixed, which should be correct for fixed elements, but reports indicate misplacement — likely an issue with elements inside transformed or scrolled containers, or fixed elements whose rect is computed relative to the wrong context. Investigate and fix badge placement so it stays correctly anchored to fixed/sticky elements on scroll and resize. Affected file: content.js (positionBadges).",
+    "created_at": "2026-08-02T17:41:44Z",
+    "completed_at": null
+  }
+]
