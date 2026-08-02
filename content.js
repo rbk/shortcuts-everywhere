@@ -85,6 +85,26 @@
     return out;
   }
 
+  // Synthesize a real mouse press (mousedown -> mouseup -> click) at the
+  // element's center rather than calling el.click() alone. el.click() only
+  // dispatches a `click` event, which custom UIs that listen for mousedown /
+  // mouseup ignore (e.g. musictheory.net's lesson nav controls do nothing on a
+  // bare .click()). We still terminate with el.click() rather than a dispatched
+  // MouseEvent("click") so <a href> navigation and other default actions fire.
+  // Coordinates are the element center so coordinate-based handlers behave like
+  // a real click. The sequence matches what a physical mouse press produces, so
+  // it cannot double-activate anything a real click wouldn't.
+  function clickEl(el) {
+    const r = el.getBoundingClientRect();
+    const o = {
+      bubbles: true, cancelable: true, view: window, button: 0,
+      clientX: r.left + r.width / 2, clientY: r.top + r.height / 2
+    };
+    el.dispatchEvent(new MouseEvent("mousedown", o));
+    el.dispatchEvent(new MouseEvent("mouseup", o));
+    el.click();
+  }
+
   function activate(el) {
     const tag = el.tagName;
     if (tag === "INPUT" && TEXT_INPUT_TYPES.has((el.type || "").toLowerCase())) {
@@ -92,8 +112,34 @@
     } else if (tag === "TEXTAREA" || tag === "SELECT") {
       el.focus();
     } else {
-      el.click();
+      clickEl(el);
     }
+  }
+
+  // Briefly flash an activated element's badge (yellow, scaled up) so the user
+  // sees which one fired. Restores the original badge styles after ~200ms.
+  // A transform on a position:fixed badge is purely visual (it doesn't move the
+  // anchor point), so no drift. If a rescan recreates the overlay mid-flash,
+  // the badge node is simply replaced and the flash ends early — harmless.
+  let flashTimer = null;
+  function flashBadge(badge) {
+    if (!badge) return;
+    clearTimeout(flashTimer);
+    Object.assign(badge.style, {
+      background: "#ffd24a",
+      color: "#1a1a1a",
+      borderColor: "#fff",
+      transform: "scale(1.35)",
+      transition: "transform 90ms ease-out, background 90ms, color 90ms, border-color 90ms"
+    });
+    flashTimer = setTimeout(() => {
+      Object.assign(badge.style, {
+        background: "rgba(40,40,40,0.85)",
+        color: "#fff",
+        borderColor: "rgba(255,255,255,0.4)",
+        transform: "scale(1)"
+      });
+    }, 220);
   }
 
   // --- overlay + badges ------------------------------------------------------
@@ -500,10 +546,14 @@
     // works regardless of whether Shift+1 yields "!" (real keyboard) or "1" (CDP).
     const wantShift = !!e.shiftKey;
     const code = e.code;
-    const match = assignments.find((a) => a.shift === wantShift && CHAR_TO_CODE[a.key] === code);
-    if (match) {
+    const matchIdx = assignments.findIndex((a) => a.shift === wantShift && CHAR_TO_CODE[a.key] === code);
+    if (matchIdx !== -1) {
       e.preventDefault();
-      activate(match.el);
+      activate(assignments[matchIdx].el);
+      if (overlay) {
+        const badge = overlay.querySelectorAll(".__ks_badge")[matchIdx];
+        flashBadge(badge);
+      }
     }
   }, true);
 

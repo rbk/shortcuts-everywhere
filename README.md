@@ -90,7 +90,11 @@ When no custom order is set, the default is used. A planned 3-tier hierarchy
 - When ON, interactive elements (`a[href]`, `button`, `input`, `textarea`,
   `select`, `[role=...]`, `[tabindex]`, `[onclick]`) are assigned single-char
   keys in DOM order, each shown with a small badge.
-- Pressing an assigned key (no modifier) clicks or focuses the element.
+- Pressing an assigned key (no modifier) clicks or focuses the element. For
+  clickable elements the shortcut synthesizes a real mouse press
+  (mousedown -> mouseup -> click) at the element's center, so custom UIs
+  that listen for mousedown/mouseup (e.g. musictheory.net's lesson nav)
+  respond; <a href> navigation still works via the terminating `.click()`.
 - A `MutationObserver` rescans dynamic DOM changes (debounced 200ms); badges
   reposition on scroll/resize.
 
