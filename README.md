@@ -9,18 +9,16 @@ A small badge on each interactive element shows its key; a red dot in the
 bottom-right corner shows when shortcuts are active. The toggle state is
 persisted, so shortcuts stay on after a page refresh.
 
-## Demo
-
-Demonstrates on [musictheory.net/lessons/10](https://www.musictheory.net/lessons/10):
-enabling shortcuts (badges + red dot appear), then pressing the `l` key to
-activate the lesson's **Next** control four times — each press flashes the
-matched badge and advances the lesson.
-
 <video src="./assets/demo.webm" controls muted width="640"></video>
 
-(The "Next" control listens for `mousedown`/`mouseup`, so the shortcut
-synthesizes a real mouse press rather than a bare `.click()` — see
-[How it works](#how-it-works).)
+## Demo
+
+The clip above is recorded on [musictheory.net/lessons/10](https://www.musictheory.net/lessons/10):
+enabling shortcuts (badges + red dot appear), then pressing the `l` key to
+activate the lesson's **Next** control four times — each press flashes the
+matched badge and advances the lesson. (The "Next" control listens for
+`mousedown`/`mouseup`, so the shortcut synthesizes a real mouse press rather
+than a bare `.click()` — see [How it works](#how-it-works).)
 
 ## Quick start (load as an unpacked extension)
 
