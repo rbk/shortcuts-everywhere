@@ -1,12 +1,16 @@
 (function () {
   "use strict";
 
-  // Keys assigned to interactive elements, in DOM order.
-  const KEY_POOL = "abcdefghijklmnopqrstuvwxyz0123456789";
-  // Two "?" presses within this window toggles the feature.
+  // Default key order assigned to interactive elements (numbers row, then QWERTY letters).
+  const DEFAULT_KEY_POOL = "1234567890qwertyuiopasdfghjklzxcvbnm";
+  // Two "/" presses (the unshifted "?" key) within this window toggles the feature.
   const DOUBLE_PRESS_MS = 400;
   // High z-index so badges/dot sit above page content.
   const Z = "2147483647";
+  // localStorage key for persisting the toggle state across reloads.
+  const STORAGE_KEY = "__ks_enabled";
+  // localStorage key prefix for per-origin custom key pools: "__ks_keys::<origin>".
+  const KEYS_STORAGE_PREFIX = "__ks_keys::";
 
   let enabled = false;
   let lastQuestionTime = 0;
@@ -109,10 +113,11 @@
     buildOverlay();
     assignments = [];
 
+    const pool = resolveKeyPool();
     const els = getInteractiveElements();
-    const n = Math.min(els.length, KEY_POOL.length);
+    const n = Math.min(els.length, pool.length);
     for (let i = 0; i < n; i++) {
-      const key = KEY_POOL[i];
+      const key = pool[i];
       assignments.push({ key, el: els[i] });
 
       const badge = document.createElement("div");
@@ -161,6 +166,7 @@
 
   function enable() {
     enabled = true;
+    saveState(true);
     buildDot();
     renderBadges();
     observer = new MutationObserver(debouncedRescan);
@@ -171,6 +177,7 @@
 
   function disable() {
     enabled = false;
+    saveState(false);
     clearBadges();
     if (dot) { dot.remove(); dot = null; }
     if (observer) { observer.disconnect(); observer = null; }
@@ -189,13 +196,89 @@
     rescanTimer = setTimeout(() => { if (enabled) renderBadges(); }, 200);
   }
 
+  // --- persistence -----------------------------------------------------------
+
+  function saveState(on) {
+    try {
+      if (on) localStorage.setItem(STORAGE_KEY, "1");
+      else localStorage.removeItem(STORAGE_KEY);
+    } catch (_) {
+      // localStorage may be unavailable (e.g. private mode / restricted origin);
+      // state simply won't persist across reloads.
+    }
+  }
+
+  function loadState() {
+    try {
+      return localStorage.getItem(STORAGE_KEY) === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // --- per-origin key configuration -----------------------------------------
+
+  // Each origin (site) can have its own custom key pool stored in localStorage,
+  // overriding the default order. Configure via the console API:
+  //   window.__keyboardShortcuts.setKeys("abc...")
+  //   window.__keyboardShortcuts.getKeys()
+  //   window.__keyboardShortcuts.clearKeys()
+  function keysStorageKey() {
+    return KEYS_STORAGE_PREFIX + location.origin;
+  }
+
+  // Normalize a candidate pool: lowercase a-z + 0-9, de-duplicate, preserve order.
+  function normalizePool(raw) {
+    if (typeof raw !== "string") return "";
+    const seen = new Set();
+    let out = "";
+    for (const ch of raw.toLowerCase()) {
+      if (!/[a-z0-9]/.test(ch) || seen.has(ch)) continue;
+      seen.add(ch);
+      out += ch;
+    }
+    return out;
+  }
+
+  function getConfiguredPool() {
+    try {
+      return normalizePool(localStorage.getItem(keysStorageKey()));
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function setConfiguredPool(raw) {
+    const pool = normalizePool(raw);
+    try {
+      if (pool) localStorage.setItem(keysStorageKey(), pool);
+      else localStorage.removeItem(keysStorageKey());
+    } catch (_) {
+      // localStorage unavailable; config won't persist.
+    }
+    return pool;
+  }
+
+  function clearConfiguredPool() {
+    try {
+      localStorage.removeItem(keysStorageKey());
+    } catch (_) {
+      // localStorage unavailable.
+    }
+  }
+
+  // Returns the effective pool for this origin: custom config if set, else default.
+  function resolveKeyPool() {
+    return getConfiguredPool() || DEFAULT_KEY_POOL;
+  }
+
   // --- key handling ----------------------------------------------------------
 
   document.addEventListener("keydown", function (e) {
     // Never interfere while the user is typing in a text field.
     if (isTextField(document.activeElement)) return;
 
-    if (e.key === "?") {
+    if (e.key === "/") {
       const now = Date.now();
       if (now - lastQuestionTime < DOUBLE_PRESS_MS) {
         lastQuestionTime = 0;
@@ -219,4 +302,46 @@
       activate(match.el);
     }
   }, true);
+
+  // --- init ------------------------------------------------------------------
+
+  // Restore the persisted toggle state so shortcuts survive a page reload.
+  if (loadState() && document.body) enable();
+
+  // Public console API for per-origin key configuration.
+  // Usage on a given site (open DevTools console):
+  //   __keyboardShortcuts.setKeys("abc123...")  // persist a custom key order
+  //   __keyboardShortcuts.getKeys()             // read current custom order ("")
+  //   __keyboardShortcuts.clearKeys()           // remove custom order, use default
+  //   __keyboardShortcuts.refresh()             // re-render badges with current pool
+  //   __keyboardShortcuts.toggle()               // toggle shortcuts on/off
+  Object.defineProperty(window, "__keyboardShortcuts", {
+    value: {
+      setKeys(raw) {
+        const pool = setConfiguredPool(raw);
+        if (enabled) renderBadges();
+        return pool;
+      },
+      getKeys() {
+        return getConfiguredPool();
+      },
+      clearKeys() {
+        clearConfiguredPool();
+        if (enabled) renderBadges();
+      },
+      refresh() {
+        if (enabled) renderBadges();
+      },
+      toggle,
+      get enabled() {
+        return enabled;
+      },
+      get defaultKeys() {
+        return DEFAULT_KEY_POOL;
+      }
+    },
+    writable: false,
+    configurable: true,
+    enumerable: false
+  });
 })();
