@@ -34,6 +34,9 @@ No build step, no dependencies, no icons. Load it as an unpacked extension in
   the first 36. Matching uses the physical key code (`e.code`) + Shift state so the
   digit row works whether the key comes from a real keyboard or CDP. (Cap: 72;
   a scalable sequence scheme for denser pages is a planned follow-up.)
+  Non-visible elements are skipped: `display:none`, `visibility:hidden`, and
+  `opacity:0` (in addition to zero-size rects), so badges only land on visible
+  elements.
 - Per-origin configuration: each site can have its own custom key order stored in
   `localStorage` (key `__ks_keys::<origin>`), set via the page-callable `window.__keyboardShortcuts`
   console API (`setKeys` / `getKeys` / `clearKeys` / `refresh` / `toggle`). This API is
@@ -43,7 +46,10 @@ No build step, no dependencies, no icons. Load it as an unpacked extension in
   custom order is set, the default is used.
 - Pressing an assigned key (with no modifier) clicks or focuses the element.
 - A `MutationObserver` rescans dynamic DOM changes (debounced 200ms); badges
-  reposition on scroll/resize.
+  reposition on scroll/resize. The observer watches `childList` plus
+  visibility-affecting attributes (`style`/`class`/`hidden`/`aria-hidden`) so
+  hiding an element via a class toggle triggers a rescan (otherwise badges go
+  stale on now-hidden elements).
 
 ## Conventions
 

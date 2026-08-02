@@ -1,0 +1,6 @@
+This is a screenshot of a music theory lesson titled "The Staff, Clefs, and Ledger Lines." It shows a musical staff and a numbered list of definitions.
+
+The page is populated with small, dark rounded badges containing white text, which are shortcuts for interactive elements:
+- **Header:** The home icon is marked `v`, the settings gear is `b`, and the rightmost icon is `n`.
+- **Main List:** The instructional items are numbered `1`, `2`, `3`, `5`, `6`, `7`, `8`, and `9` (note that `4` is missing). There is also a badge `k` at the bottom of the list.
+- **Bottom Right:** Near the red indicator dot, there are badges `x`, `z`, and `1`.

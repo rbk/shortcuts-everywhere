@@ -73,6 +73,11 @@
       if (seen.has(el)) return;
       seen.add(el);
       if (el.disabled) return;
+      // Skip non-visible elements. Zero-size rects catch ancestor display:none and
+      // zero-size elements; explicit computed-style checks catch visibility:hidden
+      // (which still occupies space) and opacity:0.
+      const cs = getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) === 0) return;
       const r = el.getBoundingClientRect();
       if (r.width === 0 && r.height === 0) return;
       out.push(el);
@@ -187,7 +192,13 @@
     buildDot();
     renderBadges();
     observer = new MutationObserver(debouncedRescan);
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Watch childList (added/removed nodes) AND visibility-affecting attributes
+    // so toggling a class/style that hides an element triggers a rescan (otherwise
+    // badges go stale on now-hidden elements). attributeFilter keeps it bounded.
+    observer.observe(document.body, {
+      childList: true, subtree: true,
+      attributes: true, attributeFilter: ["style", "class", "hidden", "aria-hidden"]
+    });
     window.addEventListener("scroll", positionBadges, true);
     window.addEventListener("resize", positionBadges);
   }
