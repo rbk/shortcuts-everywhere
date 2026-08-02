@@ -219,10 +219,9 @@
   // --- per-origin key configuration -----------------------------------------
 
   // Each origin (site) can have its own custom key pool stored in localStorage,
-  // overriding the default order. Configure via the console API:
-  //   window.__keyboardShortcuts.setKeys("abc...")
-  //   window.__keyboardShortcuts.getKeys()
-  //   window.__keyboardShortcuts.clearKeys()
+  // overriding the default order. Configure via the page console API defined in
+  // main.js (MAIN world):
+  //   __keyboardShortcuts.setKeys("abc...") / getKeys() / clearKeys()
   function keysStorageKey() {
     return KEYS_STORAGE_PREFIX + location.origin;
   }
@@ -245,25 +244,6 @@
       return normalizePool(localStorage.getItem(keysStorageKey()));
     } catch (_) {
       return "";
-    }
-  }
-
-  function setConfiguredPool(raw) {
-    const pool = normalizePool(raw);
-    try {
-      if (pool) localStorage.setItem(keysStorageKey(), pool);
-      else localStorage.removeItem(keysStorageKey());
-    } catch (_) {
-      // localStorage unavailable; config won't persist.
-    }
-    return pool;
-  }
-
-  function clearConfiguredPool() {
-    try {
-      localStorage.removeItem(keysStorageKey());
-    } catch (_) {
-      // localStorage unavailable.
     }
   }
 
@@ -303,45 +283,17 @@
     }
   }, true);
 
+  // --- cross-world command bridge (MAIN world -> isolated world) ------------
+  // The page-callable API lives in main.js (injected with "world": "MAIN"). It
+  // shares localStorage with the page and signals us here via shared-window
+  // CustomEvents so we can re-render badges / toggle from the DevTools console.
+  window.addEventListener("__ks-cmd-setKeys", () => { if (enabled) renderBadges(); });
+  window.addEventListener("__ks-cmd-clearKeys", () => { if (enabled) renderBadges(); });
+  window.addEventListener("__ks-cmd-refresh", () => { if (enabled) renderBadges(); });
+  window.addEventListener("__ks-cmd-toggle", toggle);
+
   // --- init ------------------------------------------------------------------
 
   // Restore the persisted toggle state so shortcuts survive a page reload.
   if (loadState() && document.body) enable();
-
-  // Public console API for per-origin key configuration.
-  // Usage on a given site (open DevTools console):
-  //   __keyboardShortcuts.setKeys("abc123...")  // persist a custom key order
-  //   __keyboardShortcuts.getKeys()             // read current custom order ("")
-  //   __keyboardShortcuts.clearKeys()           // remove custom order, use default
-  //   __keyboardShortcuts.refresh()             // re-render badges with current pool
-  //   __keyboardShortcuts.toggle()               // toggle shortcuts on/off
-  Object.defineProperty(window, "__keyboardShortcuts", {
-    value: {
-      setKeys(raw) {
-        const pool = setConfiguredPool(raw);
-        if (enabled) renderBadges();
-        return pool;
-      },
-      getKeys() {
-        return getConfiguredPool();
-      },
-      clearKeys() {
-        clearConfiguredPool();
-        if (enabled) renderBadges();
-      },
-      refresh() {
-        if (enabled) renderBadges();
-      },
-      toggle,
-      get enabled() {
-        return enabled;
-      },
-      get defaultKeys() {
-        return DEFAULT_KEY_POOL;
-      }
-    },
-    writable: false,
-    configurable: true,
-    enumerable: false
-  });
 })();
