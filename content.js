@@ -164,6 +164,14 @@
     positionBadges();
   }
 
+  let posRaf = null;
+  // Throttled wrapper for scroll/resize so the occlusion hit-testing in
+  // positionBadges doesn't run every frame.
+  function schedulePositionBadges() {
+    if (posRaf) return;
+    posRaf = requestAnimationFrame(() => { posRaf = null; positionBadges(); });
+  }
+
   function positionBadges() {
     if (!overlay) return;
     const badges = overlay.querySelectorAll(".__ks_badge");
@@ -173,14 +181,29 @@
       const badge = badges[i];
       if (!badge) return;
       const r = el.getBoundingClientRect();
-      const visible = r.left < vw && r.right > 0 && r.top < vh && r.bottom > 0;
-      if (visible) {
-        badge.style.left = Math.max(0, r.left + 2) + "px";
-        badge.style.top = Math.max(0, r.top + 2) + "px";
-        badge.style.display = "block";
-      } else {
-        badge.style.display = "none";
+      const onScreen = r.left < vw && r.right > 0 && r.top < vh && r.bottom > 0;
+      if (!onScreen) { badge.style.display = "none"; return; }
+      // Occlusion check: if a different (non-descendant) element is on top at
+      // the element's center (fixed header, modal, content covering a TOC), the
+      // element isn't actually visible to the user — hide its badge. Our
+      // overlay/badges have pointer-events:none so they don't self-occlude.
+      // Re-evaluated on scroll/resize so badges reappear when the element is.
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      if (cx >= 0 && cx < vw && cy >= 0 && cy < vh) {
+        const stack = document.elementsFromPoint(cx, cy);
+        const idx = stack.indexOf(el);
+        let occluded = idx === -1;
+        if (!occluded) {
+          for (let j = 0; j < idx; j++) {
+            if (!el.contains(stack[j])) { occluded = true; break; }
+          }
+        }
+        if (occluded) { badge.style.display = "none"; return; }
       }
+      badge.style.left = Math.max(0, r.left + 2) + "px";
+      badge.style.top = Math.max(0, r.top + 2) + "px";
+      badge.style.display = "block";
     });
   }
 
@@ -199,8 +222,8 @@
       childList: true, subtree: true,
       attributes: true, attributeFilter: ["style", "class", "hidden", "aria-hidden"]
     });
-    window.addEventListener("scroll", positionBadges, true);
-    window.addEventListener("resize", positionBadges);
+    window.addEventListener("scroll", schedulePositionBadges, true);
+    window.addEventListener("resize", schedulePositionBadges);
   }
 
   function disable() {
@@ -209,8 +232,8 @@
     clearBadges();
     if (dot) { dot.remove(); dot = null; }
     if (observer) { observer.disconnect(); observer = null; }
-    window.removeEventListener("scroll", positionBadges, true);
-    window.removeEventListener("resize", positionBadges);
+    window.removeEventListener("scroll", schedulePositionBadges, true);
+    window.removeEventListener("resize", schedulePositionBadges);
     clearTimeout(rescanTimer);
     assignments = [];
   }

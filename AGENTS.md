@@ -49,7 +49,11 @@ No build step, no dependencies, no icons. Load it as an unpacked extension in
   reposition on scroll/resize. The observer watches `childList` plus
   visibility-affecting attributes (`style`/`class`/`hidden`/`aria-hidden`) so
   hiding an element via a class toggle triggers a rescan (otherwise badges go
-  stale on now-hidden elements).
+  stale on now-hidden elements). `positionBadges` also hides a badge when its
+  element is **occluded** at its center (a different element is on top — e.g. a
+  fixed header, modal, or content covering a TOC), via `elementsFromPoint`; this
+  is re-evaluated on scroll/resize (rAF-throttled) so badges reappear when the
+  element is visible. Keys stay assigned; only the badge display is suppressed.
 
 ## Conventions
 
@@ -134,7 +138,11 @@ computed `position` (fixed/sticky/...), `display`/`visibility`/`opacity`/
 - **#3 fixed/sticky drift:** for `position === "fixed" | "sticky"` items with a
   badge, `badgeRect.{x,y}` should equal the element's `rect.{x,y}` top-left; also
   re-run the probe after `agent-browser eval "window.scrollBy(0,300)"` and flag
-  drift.
+  drift. Note: the real-world "badge shown, element not visible" case is
+  **occlusion**, not fixed/sticky drift — detect it by hit-testing each live
+  badge's element center with `document.elementsFromPoint(cx, cy)`; if the
+  element is absent from the stack or a non-descendant is above it, the badge
+  is on an occluded element.
 
 ### Seed URLs (suspected issues)
 
