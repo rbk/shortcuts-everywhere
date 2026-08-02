@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Keyboard Shortcuts",
   "version": "1.0.0",
-  "description": "Press ? twice to toggle single-key shortcuts for inputs, buttons, and links on any page. A red dot shows when enabled.",
+  "description": "Press / twice to toggle single-key shortcuts for inputs, buttons, and links on any page. A red dot shows when enabled.",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
