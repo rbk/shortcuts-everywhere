@@ -1,0 +1,1077 @@
+{
+  "url": "https://ykumar.me/blog/eclip-autoresearch/",
+  "interactiveCount": 44,
+  "badgeCount": 44,
+  "liveBadgeCount": 18,
+  "poolLength": 36,
+  "pool": "1234567890qwertyuiopasdfghjklzxcvbnm",
+  "unmatchedBadges": 0,
+  "items": [
+    {
+      "idx": 0,
+      "key": "1",
+      "hasKey": true,
+      "tag": "button",
+      "id": "theme-toggle",
+      "role": null,
+      "text": "☀️",
+      "rect": {
+        "x": 880,
+        "y": 24,
+        "w": 32,
+        "h": 40
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 882,
+        "y": 26
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 1,
+      "key": "2",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Home",
+      "rect": {
+        "x": 288,
+        "y": 88,
+        "w": 43,
+        "h": 23
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 290,
+        "y": 90
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 2,
+      "key": "3",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Blog",
+      "rect": {
+        "x": 368,
+        "y": 88,
+        "w": 33,
+        "h": 23
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 370,
+        "y": 90
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 3,
+      "key": null,
+      "hasKey": false,
+      "tag": "button",
+      "id": "toc-toggle",
+      "role": null,
+      "text": "≡",
+      "rect": {
+        "x": 240,
+        "y": -39,
+        "w": 30,
+        "h": 26
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 4,
+      "key": "5",
+      "hasKey": true,
+      "tag": "button",
+      "id": "toc-close",
+      "role": null,
+      "text": "×",
+      "rect": {
+        "x": 773,
+        "y": 92,
+        "w": 19,
+        "h": 24
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 775,
+        "y": 94
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 5,
+      "key": "6",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "01\nCore Idea",
+      "rect": {
+        "x": 408,
+        "y": 144,
+        "w": 384,
+        "h": 49
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 146
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 6,
+      "key": "7",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "02\nDataset",
+      "rect": {
+        "x": 408,
+        "y": 193,
+        "w": 384,
+        "h": 49
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 195
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 7,
+      "key": "8",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "03\nHello — Claude Code",
+      "rect": {
+        "x": 408,
+        "y": 242,
+        "w": 384,
+        "h": 49
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 244
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 8,
+      "key": "9",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "04\nSo how did it do?",
+      "rect": {
+        "x": 408,
+        "y": 291,
+        "w": 384,
+        "h": 49
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 293
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 9,
+      "key": "0",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "05\nSo AGI?",
+      "rect": {
+        "x": 408,
+        "y": 340,
+        "w": 384,
+        "h": 49
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 342
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 10,
+      "key": "q",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "06\nEpilogue",
+      "rect": {
+        "x": 408,
+        "y": 389,
+        "w": 384,
+        "h": 49
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 391
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 11,
+      "key": "w",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "07\nAcknowledgements",
+      "rect": {
+        "x": 408,
+        "y": 438,
+        "w": 384,
+        "h": 48
+      },
+      "position": "static",
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 410,
+        "y": 440
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 12,
+      "key": "e",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "#machine-learning",
+      "rect": {
+        "x": 288,
+        "y": 245,
+        "w": 157,
+        "h": 32
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 290,
+        "y": 247
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 13,
+      "key": "r",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "#agents",
+      "rect": {
+        "x": 449,
+        "y": 245,
+        "w": 77,
+        "h": 32
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 451,
+        "y": 247
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 14,
+      "key": "t",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "#clip",
+      "rect": {
+        "x": 531,
+        "y": 245,
+        "w": 53,
+        "h": 32
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 533,
+        "y": 247
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 15,
+      "key": "y",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "#autoresearch",
+      "rect": {
+        "x": 588,
+        "y": 245,
+        "w": 124,
+        "h": 32
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 590,
+        "y": 247
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 16,
+      "key": "u",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "Autoresearch",
+      "rect": {
+        "x": 671,
+        "y": 321,
+        "w": 105,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 673,
+        "y": 323
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 17,
+      "key": "i",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "eCLIP",
+      "rect": {
+        "x": 807,
+        "y": 378,
+        "w": 47,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 809,
+        "y": 380
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 18,
+      "key": "o",
+      "hasKey": true,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "Autoresearch",
+      "rect": {
+        "x": 288,
+        "y": 589,
+        "w": 105,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": false,
+      "badgeRect": {
+        "x": 290,
+        "y": 591
+      },
+      "badgeAligned": true
+    },
+    {
+      "idx": 19,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "check out the repo here!",
+      "rect": {
+        "x": 599,
+        "y": 1759,
+        "w": 183,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 20,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Ukiyo-eVG",
+      "rect": {
+        "x": 548,
+        "y": 1998,
+        "w": 77,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 21,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "CIGAr",
+      "rect": {
+        "x": 720,
+        "y": 2027,
+        "w": 44,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 22,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "gaussian heatmaps",
+      "rect": {
+        "x": 586,
+        "y": 2449,
+        "w": 150,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 23,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "eCLIP",
+      "rect": {
+        "x": 350,
+        "y": 2507,
+        "w": 47,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 24,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "Mean Rank",
+      "rect": {
+        "x": 511,
+        "y": 2864,
+        "w": 88,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 25,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "CLIP",
+      "rect": {
+        "x": 320,
+        "y": 3110,
+        "w": 38,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 26,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "ViT-Small",
+      "rect": {
+        "x": 444,
+        "y": 3110,
+        "w": 72,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 27,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "Mean Rank",
+      "rect": {
+        "x": 359,
+        "y": 3200,
+        "w": 88,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 28,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "temperature",
+      "rect": {
+        "x": 579,
+        "y": 4598,
+        "w": 99,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 29,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "attention mechanism",
+      "rect": {
+        "x": 436,
+        "y": 4946,
+        "w": 164,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 30,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": "button",
+      "text": "Autoresearch",
+      "rect": {
+        "x": 288,
+        "y": 5354,
+        "w": 105,
+        "h": 24
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 31,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Hacker News",
+      "rect": {
+        "x": 472,
+        "y": 5740,
+        "w": 98,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 32,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Ukiyo-eVG",
+      "rect": {
+        "x": 320,
+        "y": 5948,
+        "w": 77,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 33,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "CIGAr",
+      "rect": {
+        "x": 484,
+        "y": 5976,
+        "w": 44,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 34,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Autoresearch",
+      "rect": {
+        "x": 320,
+        "y": 6007,
+        "w": 100,
+        "h": 22
+      },
+      "position": "static",
+      "display": "inline",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 35,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "← Back to Blog",
+      "rect": {
+        "x": 288,
+        "y": 6096,
+        "w": 135,
+        "h": 29
+      },
+      "position": "static",
+      "display": "inline-flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 36,
+      "key": null,
+      "hasKey": false,
+      "tag": "button",
+      "id": "note-pane-close",
+      "role": null,
+      "text": "×",
+      "rect": {
+        "x": 1525,
+        "y": 32,
+        "w": 11,
+        "h": 24
+      },
+      "position": "static",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 37,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Home",
+      "rect": {
+        "x": 288,
+        "y": 6253,
+        "w": 43,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 38,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Blog",
+      "rect": {
+        "x": 369,
+        "y": 6253,
+        "w": 33,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 39,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "CV",
+      "rect": {
+        "x": 439,
+        "y": 6253,
+        "w": 21,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 40,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Publications",
+      "rect": {
+        "x": 497,
+        "y": 6253,
+        "w": 86,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 41,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Code",
+      "rect": {
+        "x": 620,
+        "y": 6253,
+        "w": 38,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 42,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Bookshelf",
+      "rect": {
+        "x": 696,
+        "y": 6253,
+        "w": 71,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    },
+    {
+      "idx": 43,
+      "key": null,
+      "hasKey": false,
+      "tag": "a",
+      "id": null,
+      "role": null,
+      "text": "Mynsta",
+      "rect": {
+        "x": 804,
+        "y": 6253,
+        "w": 51,
+        "h": 24
+      },
+      "position": "relative",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "hidden": false,
+      "offscreen": true,
+      "badgeRect": null,
+      "badgeAligned": null
+    }
+  ]
+}

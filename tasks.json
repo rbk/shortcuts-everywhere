@@ -1,19 +1,19 @@
 [
   {
     "name": "fix-badge-positioning-for-fixed-elements",
-    "description": "Badge positioning is wrong for position:fixed elements. Badges use getBoundingClientRect (viewport coords) with position:fixed, which should be correct for fixed elements, but reports indicate misplacement — likely an issue with elements inside transformed or scrolled containers, or fixed elements whose rect is computed relative to the wrong context. Investigate and fix badge placement so it stays correctly anchored to fixed/sticky elements on scroll and resize. Affected file: content.js (positionBadges). Status: not yet reproduced (musictheory turned out to be #2, not #3). Next seed URL: https://ykumar.me/blog/eclip-autoresearch/.",
+    "description": "Badge positioning is wrong for position:fixed elements. ... REFRAMED to occlusion (the real user report: 'badges shown but element not visible'). DONE (6f9295c, PR #5): positionBadges now hides a badge when the element is occluded at its center via elementsFromPoint (a different element is on top — fixed header, modal, content over a TOC). Re-evaluated on scroll/resize via rAF-throttled schedulePositionBadges. Keys stay assigned; only badge display suppressed. Verified headless on ykumar: 8 occluded live badges -> 0. Original fixed/sticky drift never reproduced. Minor follow-up: partially-covered (non-descendant above) is treated as occluded — conservative; refine if it over-hides.",
     "created_at": "2026-08-02T17:41:44Z",
-    "completed_at": null
+    "completed_at": "2026-08-02T16:30:00Z"
   },
   {
     "name": "skip-non-visible-interactive-elements",
-    "description": "Badges/shortcuts are being assigned to elements that are not actually visible to the user (e.g. off-screen, display:none ancestors, opacity:0, zero-size, or hidden behind overlays). The current visibility check only uses getBoundingClientRect width/height == 0, which misses hidden-via-CSS and off-screen elements. Add a robust visibility check (e.g. computed style visibility/display, offsetParent, and/or elementFromPoint/IntersectionObserver) so only genuinely visible interactive elements receive keys and badges. Affected file: content.js (getInteractiveElements / renderBadges). DONE (7529505): skip display:none/visibility:hidden/opacity:0 + zero-size; MutationObserver watches visibility-affecting attributes. Verified on musictheory (41 hidden-keyed -> 0). Minor follow-up: skip negligible-area elements (e.g. <2px tall) so a badge doesn't land on a 1px separator div.",
+    "description": "Badges/shortcuts are being assigned to elements that are not actually visible to the user (e.g. off-screen, display:none ancestors, opacity:0, zero-size, or hidden behind overlays). Add a robust visibility check so only genuinely visible interactive elements receive keys and badges. Affected file: content.js (getInteractiveElements / renderBadges). DONE (7529505): skip display:none/visibility:hidden/opacity:0 + zero-size; MutationObserver watches visibility-affecting attributes. Verified on musictheory (41 hidden-keyed -> 0). Minor follow-up: skip negligible-area elements (e.g. <2px tall) so a badge doesn't land on a 1px separator div.",
     "created_at": "2026-08-02T17:41:44Z",
     "completed_at": "2026-08-02T15:05:00Z"
   },
   {
     "name": "loop-key-pool-when-exhausted",
-    "description": "When there are more interactive elements than keys in the pool (36: 0-9 + a-z), remaining elements get no shortcut. Extend the assignment so it continues past 36 elements, e.g. by looping/repeating the pool (with a visual disambiguator like a multi-char label or a second-pass modifier) or by generating additional key combos. Decide on the UX (repeat keys with a count? add modifier-prefixed keys?) and implement so every visible interactive element gets an activatable shortcut. Affected file: content.js (renderBadges / KEY_POOL usage). PARTIAL (6150b4d): Shift+key second tier extends coverage 36 -> 72 (badge ⇧<key>), matched by e.code + Shift state. Cap 72; full coverage for denser pages needs a sequence scheme (deferred; needs to reconcile with the per-site custom pool).",
+    "description": "When there are more interactive elements than keys in the pool (36: 0-9 + a-z), remaining elements get no shortcut. Extend the assignment so it continues past 36 elements. Affected file: content.js (renderBadges / KEY_POOL usage). PARTIAL (6150b4d): Shift+key second tier extends coverage 36 -> 72 (badge ⇧<key>), matched by e.code + Shift state. Cap 72; full coverage for denser pages needs a sequence scheme (deferred; needs to reconcile with the per-site custom pool).",
     "created_at": "2026-08-02T17:41:44Z",
     "completed_at": null
   }
