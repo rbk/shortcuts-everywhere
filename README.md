@@ -11,6 +11,13 @@ persisted, so shortcuts stay on after a page refresh.
 
 <video src="./assets/demo.webm" controls muted width="640"></video>
 
+https://github.com/user-attachments/assets/c589ff5b-ec5b-4ec9-bef3-7a60614c38a8
+
+The `<video>` tag above plays when viewing this README locally (GitHub strips
+it). The bare `user-attachments` URL on its own line is what GitHub renders as
+an inline player; the video is hosted as a drag-and-drop attachment on
+[#8 (videos)](https://github.com/rbk/shortcuts-everywhere/issues/8).
+
 ## Demo
 
 The clip above is recorded on [musictheory.net/lessons/10](https://www.musictheory.net/lessons/10):
