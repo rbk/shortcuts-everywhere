@@ -11,6 +11,16 @@
   const STORAGE_KEY = "__ks_enabled";
   // localStorage key prefix for per-origin custom key pools: "__ks_keys::<origin>".
   const KEYS_STORAGE_PREFIX = "__ks_keys::";
+  // Map each pool char (a-z, 0-9) to its physical KeyboardEvent.code, so key
+  // matching works whether the key comes from a real keyboard (Shift+1 -> key
+  // "!") or via CDP (Shift+1 -> key "1"). Matching on e.code + Shift state is
+  // layout-stable and source-stable. Assumes a US QWERTY physical layout.
+  const CHAR_TO_CODE = (function () {
+    const m = {};
+    for (const c of "1234567890") m[c] = "Digit" + c;
+    for (const c of "abcdefghijklmnopqrstuvwxyz") m[c] = "Key" + c.toUpperCase();
+    return m;
+  })();
 
   let enabled = false;
   let lastQuestionTime = 0;
@@ -116,10 +126,16 @@
 
     const pool = resolveKeyPool();
     const els = getInteractiveElements();
-    const n = Math.min(els.length, pool.length);
-    for (let i = 0; i < n; i++) {
-      const key = pool[i];
-      assignments.push({ key, el: els[i] });
+    assignments = [];
+    // Assign keys in tiers: tier 0 = no modifier (single key), tier 1 = Shift+key.
+    // Cycles the pool per tier so keys "continue" past pool.length. Capped at 2
+    // tiers (72 keys) since only Shift is a safe, conflict-free modifier.
+    for (let i = 0; i < els.length; i++) {
+      const tier = Math.floor(i / pool.length);
+      if (tier > 1) break; // beyond tier 1: no key (cap reached)
+      const key = pool[i % pool.length];
+      const shift = tier === 1;
+      assignments.push({ key, shift, el: els[i] });
 
       const badge = document.createElement("div");
       badge.className = "__ks_badge";
@@ -137,7 +153,7 @@
         lineHeight: "1",
         zIndex: Z
       });
-      badge.textContent = key;
+      badge.textContent = shift ? ("\u21e7" + key) : key;
       overlay.appendChild(badge);
     }
     positionBadges();
@@ -373,7 +389,8 @@
     const hint = document.createElement("div");
     hint.innerHTML =
       "Toggle shortcuts: press <code>/</code> twice<br>" +
-      "Open/close settings: press <code>Shift + /</code>";
+      "Open/close settings: press <code>Shift + /</code><br>" +
+      "Beyond 36 elements: <code>Shift + key</code> (badge <code>⇧</code>)";
     Object.assign(hint.style, { color: "#888", fontSize: "12px" });
     hint.querySelectorAll("code").forEach((c) => {
       Object.assign(c.style, { background: "#2a2a2a", padding: "0 3px", borderRadius: "3px" });
@@ -444,10 +461,12 @@
     if (!enabled) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
 
-    const k = (e.key || "").toLowerCase();
-    if (k.length !== 1) return;
-
-    const match = assignments.find((a) => a.key === k);
+    // Shift is meaningful: tier 0 = no Shift, tier 1 = Shift+key. Match by the
+    // physical key code (e.code) + Shift state, not by e.key, so the digit row
+    // works regardless of whether Shift+1 yields "!" (real keyboard) or "1" (CDP).
+    const wantShift = !!e.shiftKey;
+    const code = e.code;
+    const match = assignments.find((a) => a.shift === wantShift && CHAR_TO_CODE[a.key] === code);
     if (match) {
       e.preventDefault();
       activate(match.el);
