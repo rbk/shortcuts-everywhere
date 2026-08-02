@@ -93,10 +93,13 @@ KS=$(pwd)                                           # absolute path to this repo
 ### Launch Chrome with the extension loaded
 
 ```bash
-agent-browser --headed \
+agent-browser \
   --args "--load-extension=$KS,--disable-extensions-except=$KS" \
   open <url>
 ```
+
+Use headless mode (no `--headed`) per the global convention; `--headed` is only
+useful when a human wants to watch the session live.
 
 After any `content.js` / `main.js` / `manifest.json` change: `agent-browser close`,
 then relaunch — the extension reloads fresh from disk (no `chrome://extensions`
@@ -149,6 +152,53 @@ computed `position` (fixed/sticky/...), `display`/`visibility`/`opacity`/
 - `https://news.ycombinator.com/news` — #1 (>36 links), #2
 - `https://www.musictheory.net/lessons/10` — #3 (fixed/canvas), #2
 - `https://ykumar.me/blog/eclip-autoresearch/` — #3 (fixed header)
+
+### Recording a video (QA demos)
+
+`agent-browser record start <path.webm> [url]` / `record stop` records a WebM.
+**Gotcha:** `record start` spins up a **fresh browser context that does NOT load
+the unpacked extension** (`--load-extension` only applies at browser launch, not
+to a new context), so `window.__keyboardShortcuts` is undefined in the recorded
+context and the extension's keydown handler / badges never run. `--args` cannot be
+passed to `record start`.
+
+Workaround: inject the **actual** `content.js` + `main.js` source into the
+recorded page via base64 `eval`. The two files share `window` / `localStorage` and
+communicate via the same `__ks-cmd-*` `CustomEvent`s as when loaded normally,
+so the recorded behavior is the real extension code (same keydown matching,
+badges, flash, and `clickEl` activation). Then drive it with `press` / the
+`__keyboardShortcuts` API exactly as in a normal session.
+
+```bash
+# 1. Launch the browser with the extension (so the process runs) and clear
+#    persisted enabled state so the video shows the toggle.
+agent-browser --args "--load-extension=$KS,--disable-extensions-except=$KS" open <url>
+agent-browser eval "try{localStorage.removeItem('__ks_enabled')}catch(e){}"
+
+# 2. Start recording (fresh context, NO extension).
+agent-browser record start ./qa/demo.webm
+
+# 3. Inject the real source into the recorded page.
+B64M=$(base64 -i main.js | tr -d '\n')
+B64C=$(base64 -i content.js | tr -d '\n')
+agent-browser eval "eval(atob('$B64M'))"   # defines window.__keyboardShortcuts
+agent-browser eval "eval(atob('$B64C'))"   # keydown handler + badges + flash
+
+# 4. Drive it (deterministic, via its own API + press).
+agent-browser wait 1200                              # show page, no shortcuts
+agent-browser eval "window.__keyboardShortcuts.toggle()"  # badges + red dot
+agent-browser wait 1500
+for i in 1 2 3 4; do agent-browser press l; agent-browser wait 1500; done
+
+# 5. Stop and save.
+agent-browser record stop
+```
+
+- Verify the take with `ffprobe -v error -show_entries format=duration
+  -of default=noprint_wrappers=1 qa/demo.webm` (codec/size/duration).
+- Headless recording works (Chrome screencast), no `--headed` needed.
+- This injection trick is ONLY for recording; for deterministic checks and
+  screenshots use the normally-loaded extension as in the sections above.
 
 ### Caveats
 

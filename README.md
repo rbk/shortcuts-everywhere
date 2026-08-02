@@ -11,11 +11,16 @@ persisted, so shortcuts stay on after a page refresh.
 
 ## Demo
 
-<!-- TODO: add demo video. Suggested embed: -->
+Demonstrates on [musictheory.net/lessons/10](https://www.musictheory.net/lessons/10):
+enabling shortcuts (badges + red dot appear), then pressing the `l` key to
+activate the lesson's **Next** control four times — each press flashes the
+matched badge and advances the lesson.
 
-<!-- <video src="./assets/demo.mp4" controls muted width="640"></video> -->
+<video src="./assets/demo.webm" controls muted width="640"></video>
 
-_A demo video is coming soon._
+(The "Next" control listens for `mousedown`/`mouseup`, so the shortcut
+synthesizes a real mouse press rather than a bare `.click()` — see
+[How it works](#how-it-works).)
 
 ## Quick start (load as an unpacked extension)
 
